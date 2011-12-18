@@ -14,6 +14,11 @@ def list():
     for reservation in r.get_all_instances():
         for instance in reservation.instances:
             print instance.id, instance.state, instance.ip_address, instance.key_name, instance.launch_time, "\n    ", instance.dns_name
+            tags = []
+            for k,v in instance.tags.items():
+                tags.append(k+":"+v)
+            if tags:
+                print "    ", ", ".join(tags)
 list.activity = True
 
 def console(instance_id):

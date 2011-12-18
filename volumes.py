@@ -7,6 +7,28 @@ def connect():
     r = boto.ec2.connect_to_region("us-east-1")
     return r
 
+def create(size, snapshot_id=None, zone="us-east-1b"):
+    r = connect()
+    return r.create_volume(int(size), zone, snapshot_id)
+    
+
+def snapshots():
+    r = connect()
+    for snap in r.get_all_snapshots(owner='self'):
+        display = [snap.id]
+        if snap.description:
+            display.append(snap.description)
+        if snap.tags:
+            for k, v  in snap.tags.items():
+                display.append("%s: %s" % (k, v))
+        display.append("%s (%s)" % (snap.status, snap.progress))
+        print " ".join(display)
+    
+
+def snapshot(volume_id, description):
+    r = connect()
+    return r.create_snapshot(volume_id, description)
+
 def delete_unused():
     """Delete any currently unattached volumes not coming from a snapshot"""
     r = connect()
