@@ -7,7 +7,15 @@ def connect():
     r = boto.ec2.connect_to_region("us-east-1")
     return r
 
-r = connect()
+def autoscale_activities(group_name):
+    """Reports the autoscaling activities, given a group."""
+    scale = boto.connect_autoscale()
+    act = scale.get_all_activities(group_name)
+    for i in act:
+        print i.cause
+        print "    ", i.description
+autoscale_activities.activity = True
+
 def list():
     """List active volumes"""
     r = connect()

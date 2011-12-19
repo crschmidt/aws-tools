@@ -28,6 +28,7 @@ def list():
     for lb in lbs:
         print lb.name, lb.dns_name
         print "  ", ", ".join([str(x) for x in lb.instances])
+        print "  ", lb.get_instance_health()
 list.activity = True
 
 def help():
