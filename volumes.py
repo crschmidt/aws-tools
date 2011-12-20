@@ -8,11 +8,13 @@ def connect():
     return r
 
 def create(size, snapshot_id=None, zone="us-east-1b"):
+    "Create a volume with a size (given in GB) and an optional snapshot_id"
     r = connect()
     return r.create_volume(int(size), zone, snapshot_id)
-    
+create.activity = True    
 
 def snapshots():
+    "List self-owned snapshots"
     r = connect()
     for snap in r.get_all_snapshots(owner='self'):
         display = [snap.id]
@@ -23,11 +25,13 @@ def snapshots():
                 display.append("%s: %s" % (k, v))
         display.append("%s (%s)" % (snap.status, snap.progress))
         print " ".join(display)
-    
+snapshots.activity = True    
 
 def snapshot(volume_id, description):
+    "Snapshot a given volume ID, with a description"
     r = connect()
     return r.create_snapshot(volume_id, description)
+snapshot.activity = True
 
 def delete_unused():
     """Delete any currently unattached volumes not coming from a snapshot"""
