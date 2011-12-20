@@ -9,18 +9,24 @@ def connect():
     return elb
 
 def add_instance(lbname, instance_id):
+    "Given the name of a load balancer and an instance id, add the instance to the load balancer."
     elb = connect()
     return elb.register_instances(lbname, [instance_id])
+remove_instance.activity=True    
+
 
 def remove_instance(lbname, instance_id):
+    "Given the name of a load balancer and an instance id, remove the instance from the load balancer."
     elb = connect()
     return elb.deregister_instances(lbname, [instance_id])
-    
+remove_instance.activity=True    
 
 def delete(lbname):
+    "Delete a load balancer. use with caution."
     elb = connect()
     lb = elb.get_all_load_balancers(load_balancer_names=[lbname])[0]
     return lb.delete()
+remove_instance.activity=True    
 
 def list():
     elb = connect()
