@@ -17,7 +17,7 @@ def autoscale_activities(group_name):
 autoscale_activities.activity = True
 
 def list():
-    """List active volumes"""
+    """List active instances"""
     r = connect()
     for reservation in r.get_all_instances():
         for instance in reservation.instances:
@@ -33,9 +33,10 @@ def console(instance_id):
     r = connect()
     i = r.get_all_instances(instance_id)[0].instances[0]
     print i.get_console_output().output
+console.activity = True
 
 def terminate(instance_id):
-    """Delete a volume, given an instance id"""
+    """Terminate an instance, given an instance id"""
     r = connect()
     i = r.get_all_instances(instance_id)[0]
     return i.instances[0].terminate()
